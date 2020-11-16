@@ -1,0 +1,6 @@
+*data/*
+*plots/*
+*.csv
+*~
+*DS_Store*
+*results/*
