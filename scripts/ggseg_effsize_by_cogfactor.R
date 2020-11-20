@@ -68,7 +68,7 @@ labels_mem <- labels[labels$region %in% bigstdeffectrescale_mem, ]
 
 p_compcog_cort <- ggseg(eff_df2[eff_df2$Score == 'Complex Cognition', ], atlas='micCort2',
     mapping=aes(fill=StdEffectRescale), hemisphere='left', size=.1, colour='black') +
-  scale_fill_gradient(low = 'bisque', high = 'red4') +
+  scale_fill_gradient(low = 'cornsilk', high = 'red4') +
   ggtitle('Complex Cognition') +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank(), legend.position='none') +
@@ -77,7 +77,7 @@ p_compcog_cort <- ggseg(eff_df2[eff_df2$Score == 'Complex Cognition', ], atlas='
 
 p_soccog_cort <- ggseg(eff_df2[eff_df2$Score == 'Social Cognition', ], atlas='micCort2',
     mapping=aes(fill=StdEffectRescale), hemisphere='left', size=.1, colour='black') +
-  scale_fill_gradient(low = 'bisque', high = 'red4') +
+  scale_fill_gradient(low = 'cornsilk', high = 'red4') +
   ggtitle('Social Cognition') +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank(), legend.position='none') +
@@ -86,7 +86,7 @@ p_soccog_cort <- ggseg(eff_df2[eff_df2$Score == 'Social Cognition', ], atlas='mi
 
 p_mem_cort <- ggseg(eff_df2[eff_df2$Score == 'Memory', ], atlas='micCort2',
     mapping=aes(fill=StdEffectRescale), hemisphere='left', size=.1, colour='black') +
-  scale_fill_gradient(low = 'bisque', high = 'red4') +
+  scale_fill_gradient(low = 'cornsilk', high = 'red4') +
   ggtitle('Memory') +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank(), legend.position='none') +
@@ -113,7 +113,7 @@ labels_mem <- labels[labels$region %in% bigstdeffectrescale_mem, ]
 
 p_compcog <- ggseg(eff_df3[eff_df3$Score == 'Complex Cognition', ], atlas='aseg',
     hemisphere=c('left', 'right'), mapping=aes(fill=StdEffectRescale), size=.1, colour='black') +
-  scale_fill_gradient(low = 'bisque', high = 'red4', limits=c(0, 1)) +
+  scale_fill_gradient(low = 'cornsilk', high = 'red4', limits=c(0, 1)) +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank()) +
   ggrepel::geom_label_repel(data = labels_compcog, inherit.aes = FALSE, size=3,
@@ -121,7 +121,7 @@ p_compcog <- ggseg(eff_df3[eff_df3$Score == 'Complex Cognition', ], atlas='aseg'
 
 p_soccog <- ggseg(eff_df3[eff_df3$Score == 'Social Cognition', ], atlas='aseg',
     hemisphere=c('left', 'right'), mapping=aes(fill=StdEffectRescale), size=.1, colour='black') +
-  scale_fill_gradient(low = 'bisque', high = 'red4', limits=c(0, 1)) +
+  scale_fill_gradient(low = 'cornsilk', high = 'red4', limits=c(0, 1)) +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank()) +
   ggrepel::geom_label_repel(data = labels_soccog, inherit.aes = FALSE, size=3,
@@ -129,16 +129,17 @@ p_soccog <- ggseg(eff_df3[eff_df3$Score == 'Social Cognition', ], atlas='aseg',
 
 p_mem <- ggseg(eff_df3[eff_df3$Score == 'Memory', ], atlas='aseg',
     hemisphere=c('left', 'right'), mapping=aes(fill=StdEffectRescale), size=.1, colour='black') +
-  scale_fill_gradient(low = 'bisque', high = 'red4', limits=c(0, 1)) +
+  scale_fill_gradient(low = 'cornsilk', high = 'red4', limits=c(0, 1)) +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank()) +
   ggrepel::geom_label_repel(data = labels_mem, inherit.aes = FALSE, size=3,
     mapping = aes(x = .long, y=.lat, label=region))
 
-pdf(file='~/Documents/pncBrainSpatialCog/plots/cogFactorsBrainReScale_both.pdf', width=5.9, height=5.512)
-ggarrange(p_compcog_cort, p_compcog, nrow=2)
-ggarrange(p_soccog_cort, p_soccog, nrow=2)
-ggarrange(p_mem_cort, p_mem, nrow=2)
+p <- ggarrange(ggarrange(p_compcog_cort, p_compcog, nrow=2), ggarrange(p_mem_cort,
+  p_mem, nrow=2), ggarrange(p_soccog_cort, p_soccog, nrow=2), ncol=3)
+
+pdf(file='~/Documents/pncBrainSpatialCog/plots/cogFactorsBrainReScale_both.pdf', width=17.7, height=5.512)
+p
 dev.off()
 
 
