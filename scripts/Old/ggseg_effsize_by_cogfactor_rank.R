@@ -2,7 +2,7 @@
 ### factor score on the brain
 ###
 ### Ellyn Butler
-### November 3, 2020 - December 14, 2020
+### November 3, 2020 - December 8, 2020
 
 library('ggseg') # v 1.1.5 >>> 1.6.00
 library('ggplot2') # v 3.3.2 >>> 3.3.2
@@ -117,14 +117,18 @@ p_mem_cort <- ggseg(mem_df[mem_df$region %in% micCort2$region, ], atlas='micCort
 #############################################################################
 
 ##### Subcortical
-aseg <- as_ggseg_atlas(aseg)
-aseg_data <- aseg
-aseg_data <- as_ggseg_atlas(aseg_data[aseg_data$region %in% subcortical,])
+aseg_data <- aseg$data
+aseg_data <- aseg_data[aseg_data$region %in% subcortical,]
 
 labels <- aseg_data[aseg_data$hemi == "right" & aseg_data$region %in% subcortical, ] %>%
-  unnest(cols = ggseg) %>%
+  #unnest(cols = ggseg) %>%
   group_by(region) %>%
   summarise(.lat =  mean(.lat), .long = mean(.long))
+
+#labels <- aseg[aseg_data$hemi == "right" & aseg_data$region %in% subcortical, ] %>%
+  #unnest(cols = ggseg) %>%
+  #group_by(region) %>%
+  #summarise(.lat =  mean(.lat), .long = mean(.long))
 
 labels_compcog <- labels[labels$region %in% bigstdeffectrescale_compcog, ]
 labels_soccog <- labels[labels$region %in% bigstdeffectrescale_soccog, ]
@@ -141,20 +145,30 @@ levels(compcog_subcort_df$quantile) <- 1:5 # Doesn't translate to plot
 levels(soccog_subcort_df$quantile) <- 1:5
 levels(mem_subcort_df$quantile) <- 1:5
 
+
+
+
+
+
+
+
+
+
+
 p_compcog <- ggseg(compcog_subcort_df, atlas='aseg',
     hemisphere=c('left', 'right'), mapping=aes(fill=quantile), size=.1, colour='black') +
-  scale_fill_brewer(palette=8, na.translate=FALSE, guide=guide_legend(reverse=TRUE), limits=1:5) +
+  #scale_fill_gradient(low = 'cornsilk', high = 'red4', limits=c(0, 10)) +
+  scale_fill_brewer(palette=8, na.translate=FALSE) +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank()) +
   ggrepel::geom_label_repel(data = labels_compcog, inherit.aes = FALSE, size=3,
     mapping = aes(x = .long, y=.lat, label=region), label.size = NA,
-    label.padding=.1, na.rm=TRUE, fill = alpha(c("white"),0.5)) #+
-  #geom_sf_label(aes(label = subcortical),
-  #  alpha = .8, show.legend = FALSE, fill = alpha(c("white"),0.5))
+    label.padding=.1, na.rm=TRUE, fill = alpha(c("white"),0.5))
 
 p_soccog <- ggseg(soccog_subcort_df, atlas='aseg',
     hemisphere=c('left', 'right'), mapping=aes(fill=quantile), size=.1, colour='black') +
-  scale_fill_brewer(palette=8, na.translate=FALSE, guide=guide_legend(reverse=TRUE), limits=1:5) +
+  #scale_fill_gradient(low = 'cornsilk', high = 'red4', limits=c(0, 10)) +
+  scale_fill_brewer(palette=8, breaks=1:5, na.translate=FALSE) +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank()) +
   ggrepel::geom_label_repel(data = labels_soccog, inherit.aes = FALSE, size=3,
@@ -163,7 +177,8 @@ p_soccog <- ggseg(soccog_subcort_df, atlas='aseg',
 
 p_mem <- ggseg(mem_subcort_df, atlas='aseg',
     hemisphere=c('left', 'right'), mapping=aes(fill=quantile), size=.1, colour='black') +
-  scale_fill_brewer(palette=8, na.translate=FALSE, guide=guide_legend(reverse=TRUE), limits=1:5) +
+  #scale_fill_gradient(low = 'cornsilk', high = 'red4', limits=c(0, 10)) +
+  scale_fill_brewer(palette=8, na.translate=FALSE) +
   theme(text=element_text(size=14), axis.title.x=element_blank(),
     axis.text.x=element_blank()) +
   ggrepel::geom_label_repel(data = labels_mem, inherit.aes = FALSE, size=3,
@@ -173,7 +188,7 @@ p_mem <- ggseg(mem_subcort_df, atlas='aseg',
 p <- ggarrange(ggarrange(p_compcog_cort, p_compcog, nrow=2), ggarrange(p_mem_cort,
   p_mem, nrow=2), ggarrange(p_soccog_cort, p_soccog, nrow=2), ncol=3)
 
-pdf(file='~/Documents/pncBrainSpatialCog/plots/cogFactorsBrainReScale_quantile.pdf', width=17.7, height=5.512)
+pdf(file='~/Documents/pncBrainSpatialCog/plots/cogFactorsBrainReScale_both_quantile.pdf', width=17.7, height=5.512)
 p
 dev.off()
 
