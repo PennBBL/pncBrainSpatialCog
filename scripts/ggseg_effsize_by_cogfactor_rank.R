@@ -14,10 +14,12 @@ library('scales') # v 1.1.1 >>> 1.1.1
 
 
 
-modalities <- c('CBF', 'GMD', 'NBack', 'ReHo', 'Volume')
+modalities <- c('CBF', 'GMD', 'NBack', 'ReHo', 'Volume', 'ALFF', 'IdEmo', 'MD')
 substrings <- c('vol_', 'as\\.matrix\\(srcbf\\)pcasl_jlf_cbf_', '_assr_SelfReg',
   'as\\.matrix\\(srgmd\\)mprage_jlf_gmd_', 'as\\.matrix\\(srreho\\)rest_jlf_reho_',
-  'as\\.matrix\\(srNBACK\\)sigchange_contrast4_2back0back_mean_miccai_ave_', '1', '2')
+  'as\\.matrix\\(srNBACK\\)sigchange_contrast4_2back0back_mean_miccai_ave_',
+  'as\\.matrix\\(srALFF\\)rest_jlf_alff_', 'as\\.matrix\\(srTRACE\\)dti_jlf_tr_', 
+  'as\\.matrix\\(srEMO\\)sigchange_cope1_task_mean_miccai_ave_', '1', '2')
 
 for (modal in modalities) {
   load('~/Documents/ggsegExtra/data/micCort.rda')
